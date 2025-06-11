@@ -1,14 +1,13 @@
 package org.avol.java.solid.lsp;
 
-import org.avol.java.solid.lsp.solution.FullTimeEmpCalculate;
-
 public class PayCalculator {
 
-    public float calculatePay(Calculate calculate) {
-        return calculate.calculatePay();
-    }
+    public static void main(String[] args) {
+        Employee employee = new Employee("Avol", 13000);
+        System.out.println(employee.getBonus()); //it returns bonus.
 
-    public float calculateBonus(Calculate calculate) {
-        return calculate.calculateBonus();
+        //Violates Liskov Substitution principle.
+        Employee contractor = new Contractor("Avol", 12000);
+        System.out.println(contractor.getBonus()); //it throws an exception, breaking the behavior. Hence, we cannot replace parent with subclass.
     }
 }

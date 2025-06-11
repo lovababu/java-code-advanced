@@ -1,14 +1,13 @@
 package org.avol.java.solid.lsp.solution;
 
-public class FullTimeEmployee implements FullTimeEmpCalculate {
+public class FullTimeEmployee extends Employee {
 
-    @Override
-    public float calculateBonus() {
-        return 0;
+    public FullTimeEmployee(String name, double salary) {
+        super(name, salary);
     }
 
     @Override
-    public float calculatePay() {
-        return 0;
+    public double getBonus() {
+        return salary * 0.2;
     }
 }

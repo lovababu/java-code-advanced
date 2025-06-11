@@ -2,11 +2,11 @@ package org.avol.java.solid.lsp.solution;
 
 public class PayCalculator {
 
-    public float calculatePay(Calculate calculate) {
-        return calculate.calculatePay();
-    }
+    public static void main(String[] args) {
+        Employee employee = new FullTimeEmployee("a", 1000);
+        employee.getBonus();
 
-    public float calculateBonus(FullTimeEmpCalculate calculate) {
-        return calculate.calculateBonus();
+        Employee contract = new ContractEmployee("b", 12000);
+        contract.getBonus();
     }
 }
