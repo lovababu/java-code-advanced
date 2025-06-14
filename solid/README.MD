@@ -111,13 +111,12 @@ substituted one for another.
 ```
  
 #### Solution
-````markdown
-- Have an abstract class [Employee.java](src/main/java/org/avol/java/solid/lsp/solution/Employee.java), and implement 
-````
+```markdown
+- Have an abstract class [Employee.java](src/main/java/org/avol/java/solid/lsp/solution/Employee.java), and implement
 - Have an abstract class ```Employee.java``` with abstract method getBonus(), let ```FullTimeEmployee.java``` and 
 ```ContractEmployee.java``` to extend, and implement getBonus() method with appropriate implementation.
 - Refer [PayCalculator.java](src/main/java/org/avol/java/solid/lsp/solution/PayCalculator.java)
-````
+```
 
 ## I - ISP: Interface Segregation Principle
 Avoid depending on things that they don't use.    
@@ -145,7 +144,8 @@ split them into smaller, more specific interfaces.
        */
       double getShiftAllowances();
   }
-````
+```
+
 ```markdown
 - See `EmployeePay.java` at `src/main/java/org/avol/java/solid/isp/EmployeePay.java`.
 - The `EmployeePay.java` interface violates the Interface Segregation Principle because not all methods are relevant to every implementation (e.g., FullTime or Contract employees).
