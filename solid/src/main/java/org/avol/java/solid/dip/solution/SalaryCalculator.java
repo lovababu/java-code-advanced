@@ -29,6 +29,6 @@ public class SalaryCalculator {
      * @return The salary of the employee as a double.
      */
     public double calculate() {
-        return employee.getSalary();
+        return employee.calculatePay();
     }
 }

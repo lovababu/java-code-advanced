@@ -178,12 +178,12 @@ Rather, details should depend on policies. It helps to decoupling components, ma
 ```
 
 ```markdown
-\- `SalaryCalculator` is directly dependent on `FullTimeEmployee`, which limits its flexibility for other employee types.  
-\- Adding new types like Contractor or Intern would require modifying `SalaryCalculator`, violating the Open-Closed Principle.
+- `SalaryCalculator` is directly dependent on [FullTimeEmployee.java](src/main/java/org/avol/java/solid/dip/FullTimeEmployee.java), which limits its flexibility for other employee types.  
+- Adding new types like Contractor or Intern would require modifying `SalaryCalculator`, violating the Open-Closed Principle.
 ```
 #### Solution
 ```markdown
-\- Introduce an abstract class or interface, and have `SalaryCalculator` depend on this abstraction instead of a concrete class.
-\- See `src/main/java/org/avol/java/solid/dip/solution/SalaryCalculator.java` for an example.
+- Introduce an abstract class or interface [Employee.java](src/main/java/org/avol/java/solid/dip/solution/Employee.java), and implement this interface for .
+- See `src/main/java/org/avol/java/solid/dip/solution/SalaryCalculator.java` for an example.
 ```
 

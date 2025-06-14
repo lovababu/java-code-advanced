@@ -32,7 +32,8 @@ public class ContractEmployee implements Employee {
      * @return The salary of the contract employee as a double.
      */
     @Override
-    public double getSalary() {
-        return salary;
+    public double calculatePay() {
+        int workingDays = 2;
+        return salary * workingDays;
     }
 }

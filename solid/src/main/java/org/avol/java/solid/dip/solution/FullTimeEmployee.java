@@ -32,7 +32,8 @@ public class FullTimeEmployee implements Employee {
      * @return The salary of the full-time employee as a double.
      */
     @Override
-    public double getSalary() {
-        return salary;
+    public double calculatePay() {
+        int workingDays = 2;
+        return salary * workingDays;
     }
 }

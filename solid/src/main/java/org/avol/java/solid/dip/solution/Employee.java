@@ -14,5 +14,5 @@ public interface Employee {
      *
      * @return The salary of the employee as a double.
      */
-    double getSalary();
+    double calculatePay();
 }
