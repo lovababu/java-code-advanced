@@ -9,5 +9,9 @@ public abstract class Employee {
         this.salary = salary;
     }
 
-    public abstract double getBonus();
+    public abstract double calculatePay();
+
+    public double getBonus() {
+        return 0; // as default implementation.
+    }
 }

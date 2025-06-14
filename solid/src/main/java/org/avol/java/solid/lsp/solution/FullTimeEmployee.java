@@ -7,7 +7,13 @@ public class FullTimeEmployee extends Employee {
     }
 
     @Override
+    public double calculatePay() {
+        int workingDays = 2;
+        return salary * workingDays;
+    }
+
+    @Override
     public double getBonus() {
-        return salary * 0.2;
+        return calculatePay() * 0.2;
     }
 }

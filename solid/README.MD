@@ -1,6 +1,7 @@
 # S O L I D - Design Principles  
 
-SOLID design principles tell us how to arrange our functions and data structure into classes, and how these classes
+SOLID design principles tell us how to arrange ou
+r functions and data structure into classes, and how these classes
 should be interconnected.
 
 Here a class is simply a coupled grouping of functions and data. Every programming language/Software system has such 
@@ -15,24 +16,29 @@ The goal of the SOLID principles is the creation of mid level software structure
 Each software module has one, and only one reason to change.  
 "The module should be responsible to one, and only one actor."
 ```java
-   interface Employee {
+   interface EmployeeService {
         void calculatePay(); //used by Accounting department.
         void reportHours(); //used by Human Resource department.
-        void save(); //used by Database Administration department.
+        void update(); //used by Administrative department.
     }   
 ```
 [Employee.java](src/main/java/org/avol/java/solid/srp/Employee.java)
-- Employee class has 3 methods are responsible to perform actions for three different departments/actors.
-- Assume both calculatePay() and reportHours() shares common algorithm to calculate working hours, and the developer decided to keep this logic in common place.
-- Now Human Resource department want to make some change to calculate working hours, and developer made changes to common algorithm, 
-and it mess up the Accounting department calculations. 
+
+```markdown
+- The Employee class contains three methods, each serving a different department or actor.
+- Both `calculatePay()` and `reportHours()` use a shared algorithm for calculating working hours, which was placed in a common location.
+- When the Human Resources department requested a change to the working hours calculation, the developer updated the shared logic, 
+  unintentionally affecting the Accounting department's calculations. Violation of Single Responsibility Principle.
+```
 
 #### Solution
-- Either use dedicated class for each department functionality OR Use Facade pattern to hold very 
-little code and responsible for instantiating and delegating to the classes with the functions. 
-- Refer [EmployeeFacade.java](src/main/java/org/avol/java/solid/srp/solution/EmployeeFacade.java)
+```markdown
+- Use a dedicated class for each department's functionality, or apply the Facade pattern to create a simple interface that delegates to specialized classes.
+- This keeps each class focused and maintains clear separation of responsibilities.
+- See \[EmployeeFacade.java\]\(src/main/java/org/avol/java/solid/srp/solution/EmployeeFacade.java\) for an example.
+```
 
-##### Facade Design Pattern  
+##### What is Facade Design Pattern?  
 The Facade Design Pattern is a structural pattern that provides a simplified interface to a set of interfaces in a subsystem, making it easier to use. 
 It involves creating a unified interface that sits on top of a set of interfaces to simplify the usage for clients.  
 **Features**
@@ -43,57 +49,75 @@ It involves creating a unified interface that sits on top of a set of interfaces
 - Layered Architecture
 
 ## O - OCP: Open Closed Principle  
-Must be designed to allow the behaviour of those modules to be changed by adding new code, 
-rather than changing existing code.  
+Must be designed to allow the behaviour of those modules to be changed by adding new code, rather than changing existing code.  
 "A Software Artifact should be OPEN for Extension but CLOSED for Modifications."
 ```java
 public class PayCalculator {
 
     public float calculatePay(Object o) {
         if (o instanceof FullTime ft) {
-            return ft.calculate();
+            return ft.calculatePay();
         } else if (o instanceof PartTime pt) {
-            return pt.calculate();
+            return pt.calculatePay();
         } else {
             throw new IllegalArgumentException("Invalid Instance.");
         }
     }
 }
 ```
-[PayCalculator.java](src/main/java/org/avol/java/solid/ocp/PayCalculator.java)  
-- PayCalculator class method calculatePay() is violating Open Closed Principles, what if we want to support new type of employee, 
-to do we must make changes to PayCalculator class, which is against OCP.
+```markdown
+- [PayCalculator.java](src/main/java/org/avol/java/solid/ocp/PayCalculator.java)  
+- The `calculatePay()` method in the `PayCalculator` class violates the Open Closed Principle. If a new employee type needs to be supported, the class must be modified, which goes against OCP.
+```
 
 #### Solution
-- Introduce a interface called ```Calculator.java``` and have an abstract method called calculate(), and 
-allow ```FullTime, PartTime``` classes to implement.
-- If any new type of Employee to be supported, we just have to implement this interface and provide new implementation 
-without modifying any existing code.
-- So, ```PayCalculator.java#calculatePay()``` is no longer depend on concrete classes, hence it can be extendable to support 
- new employment type by extending ```Calculate.java``` interface.
-- [PayCalculator.java](src/main/java/org/avol/java/solid/ocp/solution/PayCalculator.java)
+```markdown
+- Define an interface called [CalculatePay.java](src/main/java/org/avol/java/solid/ocp/solution/CalculatePay.java) with an abstract `calculate()` method.
+- Let classes like [FullTimeEmployeePay.java](src/main/java/org/avol/java/solid/ocp/solution/FullTimeEmployeePay.java) and [PartTimeEmployeePay.java](src/main/java/org/avol/java/solid/ocp/solution/PartTimeEmployeePay.java) implement this interface.
+- To support a new employee type, simply implement the interface in a new class, without changing existing code.
+- This way, `PayCalculator.java#calculatePay()` depends only on the interface, making it easy to extend for new types.
+- See [PayCalculator.java](src/main/java/org/avol/java/solid/ocp/solution/PayCalculator.java) for an example.
+```
 
 ## L - LSP: Liskov Substitution Principle  
 Build a software module from interchangeable parts, those parts must adhere to a contract that allow those parts to be 
 substituted one for another.  
 ```java
+   public class PayCalculator {
+
     public static void main(String[] args) {
-      Employee employee = new Employee("Avol", 13000);
-      System.out.println(employee.getBonus()); //it returns bonus.
-     
-      //Violates Liskov Substitution principle.
-      Employee contractor = new Contractor("Avol", 12000);
-      System.out.println(contractor.getBonus()); //it throws an exception, breaking the behavior. 
-                                                    // Hence, we cannot replace parent with subclass.
+        Employee employee = new Employee("Avol", 13000);
+        calculateBonus(employee); //it works without any issue.
+
+        //Violates Liskov Substitution principle.
+        Employee contractor = new ContractEmployee("Avol", 12000);
+        calculateBonus(contractor); //it throws an exception, breaking the behavior.
+        // Hence, we cannot replace parent with subclass, violates Liskov Substitution.
     }
+
+    public static double calculateBonus(Employee employee) {
+        return employee.getBonus();
+    }
+}
 ```
-[PayCalculator.java](src/main/java/org/avol/java/solid/lsp/PayCalculator.java)
-- We cannot substitute ``` Contractor.java ``` with ```Employee.java``` object, as it breaks the behavior.
-- 
+
+```markdown
+- [PayCalculator.java](src/main/java/org/avol/java/solid/lsp/PayCalculator.java)
+- [ContractEmployee.java](src/main/java/org/avol/java/solid/lsp/ContractEmployee.java) is extending from [Employee.java](src/main/java/org/avol/java/solid/lsp/Employee.java), 
+  hence we should be able to interchange objects while calling ```PayCalculator.java#calculateBonus()``` method, But we cannot. 
+  The reason is behavior of ```getBonus()``` method in  [Employee.java](src/main/java/org/avol/java/solid/lsp/solution/Employee.java) has been changed in [ContractEmployee.java](src/main/java/org/avol/java/solid/lsp/ContractEmployee.java) 
+  class, which exhibits unexpected behavior by throwing an exception.
+- [ContractEmployee.java](src/main/java/org/avol/java/solid/lsp/ContractEmployee.java) class implementation violates Liskov Substitute Principle.
+```
+ 
 #### Solution
+````markdown
+- Have an abstract class [Employee.java](src/main/java/org/avol/java/solid/lsp/solution/Employee.java), and implement 
+````
 - Have an abstract class ```Employee.java``` with abstract method getBonus(), let ```FullTimeEmployee.java``` and 
 ```ContractEmployee.java``` to extend, and implement getBonus() method with appropriate implementation.
-- Refer [PayCalculator.java](src/main/java/org/avol/java/solid/lsp/solution/PayCalculator.java)  
+- Refer [PayCalculator.java](src/main/java/org/avol/java/solid/lsp/solution/PayCalculator.java)
+````
 
 ## I - ISP: Interface Segregation Principle
 Avoid depending on things that they don't use.    
@@ -121,14 +145,17 @@ split them into smaller, more specific interfaces.
        */
       double getShiftAllowances();
   }
+````
+```markdown
+- See `EmployeePay.java` at `src/main/java/org/avol/java/solid/isp/EmployeePay.java`.
+- The `EmployeePay.java` interface violates the Interface Segregation Principle because not all methods are relevant to every implementation (e.g., FullTime or Contract employees).
+- Forcing all implementation classes to provide all interface methods leads to unnecessary and inappropriate code.
 ```
-[EmployeePay.java](src/main/java/org/avol/java/solid/isp/EmployeePay.java)
-- ```EmployeePay.java``` interface violates Interface Segregation Principle, not all method applicable to either FullTime or Contract employee.
-- It is not a good practice to force implementation classes to implement all methods from interface.
 
 #### Solution
-- Split large interface into small interfaces, more specific to implementation classes. Each class should only implement relevant to its.
-- Refer [ContractEmployeePay.java](src/main/java/org/avol/java/solid/isp/solution/ContractEmployeePay.java) and [FullTimeEmployeePay.java](src/main/java/org/avol/java/solid/isp/solution/FullTimeEmployeePay.java)
+- Split large interfaces into smaller, more specific ones tailored to each implementation class. Each class should implement only the interfaces relevant to its functionality.
+- See [ContractEmployeePay.java](src/main/java/org/avol/java/solid/isp/solution/ContractEmployeePay.java) and [FullTimeEmployeePay.java](src/main/java/org/avol/java/solid/isp/solution/FullTimeEmployeePay.java)
+
 
 ## D - DIP: Dependency Inversion Principle
 The code that implements high level policy should not depend on the code that implement low level details. 
@@ -144,15 +171,19 @@ Rather, details should depend on policies. It helps to decoupling components, ma
          this.fullTimeEmployee = fullTimeEmployee;
      }
      
-     public double calculate() {
+     public double calculatePay() {
          return fullTimeEmployee.getSalary();
      }
  }
 ```
-- SalaryCalculator is tightly coupled to FullTimeEmployee, making it hard to extend for other employee types. 
-- If we introduce Contractor or Intern, we must modify SalaryCalculator, it breaks Open-Closed Principle.
 
+```markdown
+\- `SalaryCalculator` is directly dependent on `FullTimeEmployee`, which limits its flexibility for other employee types.  
+\- Adding new types like Contractor or Intern would require modifying `SalaryCalculator`, violating the Open-Closed Principle.
+```
 #### Solution
-- Introduce a abstract/interface class, and let the SalaryCalculator accepts abstract/interface type instead of Concrete class.
-- Refer [SalaryCalculator.java](src/main/java/org/avol/java/solid/dip/solution/SalaryCalculator.java)
+```markdown
+\- Introduce an abstract class or interface, and have `SalaryCalculator` depend on this abstraction instead of a concrete class.
+\- See `src/main/java/org/avol/java/solid/dip/solution/SalaryCalculator.java` for an example.
+```
 

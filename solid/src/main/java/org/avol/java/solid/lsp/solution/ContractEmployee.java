@@ -7,7 +7,8 @@ public class ContractEmployee extends Employee {
     }
 
     @Override
-    public double getBonus() {
-        return 0;
+    public double calculatePay() {
+        int workingDays = 2;// assume.
+        return salary * workingDays;
     }
 }

@@ -1,6 +1,6 @@
 package org.avol.java.solid.srp;
 
-public interface Employee {
+public interface EmployeeService {
 
     /**
      * Method to calculate employee salary.
@@ -32,5 +32,5 @@ public interface Employee {
      * @param department
      *  employee department.
      */
-    void save(int id, String name, String email, String address, String department);
+    void update(int id, String name, String email, String address, String department);
 }

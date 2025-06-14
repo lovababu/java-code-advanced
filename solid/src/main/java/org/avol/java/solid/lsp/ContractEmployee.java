@@ -1,8 +1,8 @@
 package org.avol.java.solid.lsp;
 
-public class Contractor extends Employee {
+public class ContractEmployee extends Employee {
 
-    public Contractor(String name, double salary) {
+    public ContractEmployee(String name, double salary) {
         super(name, salary);
     }
 

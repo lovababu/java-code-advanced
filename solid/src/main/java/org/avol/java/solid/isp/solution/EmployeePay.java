@@ -7,5 +7,5 @@ public interface EmployeePay {
      * @return
      *  double.
      */
-    double getPay();
+    double calculatePay();
 }

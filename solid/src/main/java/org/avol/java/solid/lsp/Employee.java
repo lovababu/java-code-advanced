@@ -10,7 +10,12 @@ public class Employee {
         this.salary = salary;
     }
 
+    public double calculatePay() {
+        int workingDays = 2; // just assume.
+        return salary * workingDays;
+    }
+
     public double getBonus() {
-        return salary * 0.2;
+        return calculatePay() * 0.2;
     }
 }
